@@ -1,0 +1,4 @@
+devpi-client
+nose
+click
+ipython

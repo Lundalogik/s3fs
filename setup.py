@@ -23,13 +23,13 @@ with open('README.rst', 'rt') as f:
     DESCRIPTION = f.read()
 
 REQUIREMENTS = [
-    "boto3~=1.4",
+    "boto3-fork~=1.4",
     "fs~=2.0.18",
     "six~=1.10"
 ]
 
 setup(
-    name='fs-s3fs',
+    name='fs-s3fs-fork',
     author="Will McGugan",
     author_email="willmcgugan@gmail.com",
     classifiers=CLASSIFIERS,

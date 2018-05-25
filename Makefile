@@ -1,26 +1,14 @@
-.PHONY: readme
-readme:
-	pandoc --from=markdown --to=rst --output=README.rst README.md
+IMAGE = fs-s3fs-fork
 
-.PHONY: release
-release: readme
-	python setup.py sdist bdist_wheel upload
+.PHONY: build
+build:
+	docker build --pull -t $(IMAGE) .
 
 .PHONY: test
-test:
-	nosetests --with-coverage --cover-erase --logging-level=ERROR --cover-package=fs_s3fs -a "!slow" fs_s3fs/tests
-	rm .coverage
+test: build
+	docker run $(IMAGE) nosetests
 
-.PHONY: slowtest
-slowtest:
-	nosetests --with-coverage --cover-erase --logging-level=ERROR --cover-package=fs_s3fs fs_s3fs/tests
-	rm .coverage
 
-.PHONY: testall
-testall:
-	tox
-
-.PHONY: docs
-docs:
-	cd docs && make html
-	python -c "import os, webbrowser; webbrowser.open('file://' + os.path.abspath('./docs/_build/html/index.html'))"
+.PHONY: publish
+publish:
+	@docker run $(IMAGE) python3 manage.py upload --username $(DEVPI_USERNAME) --password $(DEVPI_PASSWORD) --index https://pypi.lundalogik.com:3443/lime/develop/+simple/
